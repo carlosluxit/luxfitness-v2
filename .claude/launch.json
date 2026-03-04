@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "frontend"],
+      "port": 3000
+    },
+    {
+      "name": "cms",
+      "runtimeExecutable": "/Users/carlosromero/.nvm/versions/node/v22.22.0/bin/npm",
+      "runtimeArgs": ["run", "develop", "--prefix", "cms"],
+      "port": 1337
+    }
+  ]
+}

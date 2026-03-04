@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.luxfitness.ca)",
+      "WebFetch(domain:webcache.googleusercontent.com)",
+      "WebFetch(domain:www.google.com)",
+      "WebFetch(domain:web.archive.org)",
+      "WebFetch(domain:www.opengraph.xyz)",
+      "Bash(gh auth status)",
+      "Bash(gh api user/orgs)",
+      "Bash(gh repo create carlosluxit/luxfitness-v2 --public --description \"LuxFitness Premium Gym - Redesigned website with Next.js + Strapi CMS\")",
+      "Bash(npx create-next-app@latest frontend --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)",
+      "Bash(npm install lucide-react framer-motion @strapi/blocks-react-renderer clsx)",
+      "Bash(npm install lucide-react framer-motion clsx --legacy-peer-deps)",
+      "Bash(npm run build)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npx --yes create-strapi-app@latest cms --quickstart --no-run)",
+      "Bash(brew list)"
+    ]
+  }
+}
