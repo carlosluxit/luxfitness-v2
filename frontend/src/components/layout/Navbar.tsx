@@ -41,8 +41,9 @@ export function Navbar({ logoUrl }: NavbarProps) {
   return (
     <>
       <nav
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
         className={clsx(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-700 bg-background [padding-top:env(safe-area-inset-top)]",
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-700 bg-background",
           scrolled && "border-b border-border"
         )}
       >
