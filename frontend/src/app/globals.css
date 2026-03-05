@@ -21,6 +21,8 @@ html {
      notch area and overscroll rubber-band region with the correct dark colour.
      Without this, iOS falls back to white in those zones. */
   background: #060606;
+  /* Prevent iOS rubber-band overscroll revealing blank areas above/below page */
+  overscroll-behavior: none;
   scroll-behavior: smooth;
   scroll-padding-top: calc(5rem + env(safe-area-inset-top)); /* account for fixed navbar */
   -webkit-font-smoothing: antialiased;

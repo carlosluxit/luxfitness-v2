@@ -51,9 +51,16 @@ export function Navbar({ logoUrl }: NavbarProps) {
       />
 
       <nav
-        style={{ paddingTop: "env(safe-area-inset-top)" }}
+        style={{
+          paddingTop: "env(safe-area-inset-top)",
+          // Force a dedicated GPU compositing layer so iOS Safari never lets
+          // page content bleed through the fixed navbar during momentum scroll
+          transform: "translateZ(0)",
+          willChange: "transform",
+        }}
         className={clsx(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-700 bg-background",
+          "fixed top-0 left-0 right-0 z-50 bg-background",
+          "transition-[border-color] duration-700",
           scrolled && "border-b border-border"
         )}
       >

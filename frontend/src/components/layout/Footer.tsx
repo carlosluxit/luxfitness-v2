@@ -122,24 +122,10 @@ export function Footer({ siteSettings }: FooterProps) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="py-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="py-6 border-t border-border flex items-center justify-center">
           <p className="text-[11px] text-muted-foreground/50">
-            &copy; {new Date().getFullYear()} LUX Fitness
+            &copy; {new Date().getFullYear()} LUX Fitness. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/privacy"
-              className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors duration-500"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors duration-500"
-            >
-              Terms
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
