@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, Clock, Award, Users, Target, Sparkles } from "lucide-react";
+import { Award, Users, Target, Sparkles } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
   AnimatedSection,
@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/AnimatedSection";
 import type { CMSTeamMember, CMSSiteSettings } from "@/lib/strapi";
 import { strapiMediaUrl } from "@/lib/strapi/helpers";
-import { HOURS } from "@/lib/constants";
 
 // Local coach photos in display order — used when CMS has no photo uploaded yet
 // Order must match the `order` field in Strapi (0, 1, 2, 3)
@@ -53,8 +52,6 @@ interface AboutPageProps {
 }
 
 export function AboutPage({ teamMembers, siteSettings }: AboutPageProps) {
-  const hours = siteSettings?.hours || [...HOURS];
-
   return (
     <>
       {/* Hero */}
@@ -108,32 +105,6 @@ export function AboutPage({ teamMembers, siteSettings }: AboutPageProps) {
                 </p>
               </AnimatedSection>
 
-              <AnimatedSection delay={0.4}>
-                <div className="mt-10 grid grid-cols-2 gap-6">
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-4 h-4 text-accent shrink-0 mt-1" />
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
-                        Location
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-0.5">
-                        Saint-Leonard, Montreal
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Clock className="w-4 h-4 text-accent shrink-0 mt-1" />
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
-                        Open Daily
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-0.5">
-                        {hours[0]?.hours || "5:00 AM - 11:00 PM"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </AnimatedSection>
             </div>
           </div>
         </div>
