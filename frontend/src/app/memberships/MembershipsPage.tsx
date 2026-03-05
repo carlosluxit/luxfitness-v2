@@ -17,22 +17,13 @@ type Plan = {
   highlighted: boolean;
   badge: string | null;
   features: string[];
+  mdOrder?: number; // desktop column: 1=left 2=centre 3=right
 };
 
 /* ─── Fallback membership plans ──────────────────────────────────────────── */
+// Array order = mobile stacking order (highlighted first).
+// mdOrder controls desktop column position so highlighted stays centred.
 const MEMBERSHIPS_FALLBACK: Plan[] = [
-  {
-    id: "3mo",
-    name: "3 Months",
-    price: 150,
-    couplePrice: 250,
-    highlighted: false,
-    badge: null,
-    features: [
-      "Access 6 am – 10 pm",
-      "Reduced Personal Training Rates",
-    ],
-  },
   {
     id: "1yr",
     name: "1 Year",
@@ -40,6 +31,7 @@ const MEMBERSHIPS_FALLBACK: Plan[] = [
     couplePrice: 175,
     highlighted: true,
     badge: "Best Value",
+    mdOrder: 2, // centre column on desktop
     features: [
       "Access 6 am – 10 pm",
       "1 ShapeScale 3D Body Scan / Month",
@@ -55,9 +47,23 @@ const MEMBERSHIPS_FALLBACK: Plan[] = [
     couplePrice: 225,
     highlighted: false,
     badge: null,
+    mdOrder: 3, // right column on desktop
     features: [
       "Access 6 am – 10 pm",
       "Full Hour Evaluation With a Trainer",
+      "Reduced Personal Training Rates",
+    ],
+  },
+  {
+    id: "3mo",
+    name: "3 Months",
+    price: 150,
+    couplePrice: 250,
+    highlighted: false,
+    badge: null,
+    mdOrder: 1, // left column on desktop
+    features: [
+      "Access 6 am – 10 pm",
       "Reduced Personal Training Rates",
     ],
   },
@@ -114,9 +120,11 @@ const TRAINING = [
 
 type Tab = "memberships" | "training";
 
+const DESKTOP_ORDER = [2, 1, 3]; // highlighted first → centre; rest → left/right
+
 function normaliseMemberships(cms?: CMSMembership[]): Plan[] {
   if (!cms?.length) return MEMBERSHIPS_FALLBACK;
-  return cms.map((m) => ({
+  const plans: Plan[] = cms.map((m) => ({
     id: m.slug,
     name: m.name,
     price: m.price,
@@ -125,6 +133,9 @@ function normaliseMemberships(cms?: CMSMembership[]): Plan[] {
     badge: m.badge ?? null,
     features: Array.isArray(m.features) ? m.features : [],
   }));
+  plans.sort((a, b) => Number(b.highlighted) - Number(a.highlighted));
+  plans.forEach((p, i) => { p.mdOrder = DESKTOP_ORDER[i] ?? i + 1; });
+  return plans;
 }
 
 function PricingCards({ active, plans }: { active: Tab; plans: Plan[] }) {
@@ -132,7 +143,13 @@ function PricingCards({ active, plans }: { active: Tab; plans: Plan[] }) {
     <StaggerContainer key={active} className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10 items-stretch">
       {active === "memberships"
         ? plans.map((plan) => (
-            <StaggerItem key={plan.id} className="h-full">
+            <StaggerItem
+              key={plan.id}
+              className={clsx(
+                "h-full",
+                plan.mdOrder === 1 ? "md:order-1" : plan.mdOrder === 3 ? "md:order-3" : "md:order-2"
+              )}
+            >
               <div
                 className={clsx(
                   "relative h-full flex flex-col rounded-sm overflow-hidden transition-all duration-500 group",
@@ -158,8 +175,8 @@ function PricingCards({ active, plans }: { active: Tab; plans: Plan[] }) {
                   </h3>
 
                   <div className="mt-4 flex items-baseline gap-1">
-                    <span className="text-foreground/40 text-2xl font-light">$</span>
-                    <span className={clsx("text-5xl md:text-6xl font-light", plan.highlighted ? "text-accent" : "text-foreground")}>
+                    <span className="text-foreground/40 text-2xl font-bold">$</span>
+                    <span className={clsx("text-5xl md:text-6xl font-bold", plan.highlighted ? "text-accent" : "text-foreground")}>
                       {plan.price}
                     </span>
                     <span className="text-sm text-muted-foreground ml-1">/mo</span>
