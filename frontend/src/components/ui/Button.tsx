@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { clsx } from "clsx";
-import { MoveRight } from "lucide-react";
+import { CircleArrowRight } from "lucide-react";
 
 type ButtonVariant = "primary" | "outline" | "text";
 
@@ -44,7 +44,7 @@ export function Button({
     variant === "primary" ? (
       <>
         <span>{children}</span>
-        <MoveRight className="w-4 h-4 text-background/70 group-hover:text-background group-hover:translate-x-0.5 transition-all duration-500" />
+        <CircleArrowRight className="w-4 h-4 text-background/70 group-hover:text-background group-hover:translate-x-0.5 transition-all duration-500" />
       </>
     ) : (
       <span>{children}</span>
