@@ -12,6 +12,8 @@ const SLIDES = [
   "/images/eq2.png",
   "/images/eq3.png",
   "/images/eq4.png",
+  "/images/eq5.png",
+  "/images/eq6.png",
 ];
 
 const INTERVAL = 4000; // ms between auto-advances
