@@ -77,6 +77,7 @@ const TRAINING = [
     name: "Individual",
     label: "1-on-1 sessions",
     highlighted: true,
+    mdOrder: 2, // centre column on desktop
     description:
       "Private sessions designed exclusively around your goals with a certified LUX trainer.",
     features: [
@@ -92,6 +93,7 @@ const TRAINING = [
     name: "Group Training",
     label: "2 – 4 people",
     highlighted: false,
+    mdOrder: 1, // left column on desktop
     description:
       "Train with friends or a partner and split the cost without sacrificing attention or quality.",
     features: [
@@ -107,6 +109,7 @@ const TRAINING = [
     name: "Session Bundles",
     label: "5 · 10 · 20 sessions",
     highlighted: false,
+    mdOrder: 3, // right column on desktop
     description:
       "Pre-purchase session packs for maximum savings. The more you commit, the more you save.",
     features: [
@@ -214,7 +217,13 @@ function PricingCards({ active, plans }: { active: Tab; plans: Plan[] }) {
         : TRAINING.map((plan) => {
             const Icon = plan.icon;
             return (
-              <StaggerItem key={plan.id} className="h-full">
+              <StaggerItem
+                key={plan.id}
+                className={clsx(
+                  "h-full",
+                  plan.mdOrder === 1 ? "md:order-1" : plan.mdOrder === 3 ? "md:order-3" : "md:order-2"
+                )}
+              >
                 <div
                   className={clsx(
                     "relative h-full flex flex-col rounded-sm overflow-hidden transition-all duration-500 group",
