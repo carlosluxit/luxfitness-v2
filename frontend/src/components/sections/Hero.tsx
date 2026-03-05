@@ -89,7 +89,7 @@ export function Hero({ siteSettings }: HeroProps) {
             />
             <div className="flex items-baseline">
               <RotatingText
-                texts={["Standard", "Potential", "Lifestyle", "Ambition"]}
+                texts={["Potential", "Lifestyle", "Ambition"]}
                 rotationInterval={3000}
                 mainClassName="text-fluid-hero text-accent !leading-[0.88] overflow-hidden inline-flex"
                 elementLevelClassName="inline-block"
