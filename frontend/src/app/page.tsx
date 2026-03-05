@@ -20,7 +20,7 @@ export default async function Home() {
     <>
       <Hero siteSettings={siteSettings} />
       <Stats />
-      <About imageSrc={strapiMediaUrl(siteSettings?.aboutImage) ?? undefined} />
+      <About />
       <Services services={services} />
       <Memberships memberships={memberships} />
       <Testimonials testimonials={testimonials} />
