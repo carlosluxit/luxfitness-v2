@@ -197,8 +197,8 @@ export function Memberships({ memberships }: MembershipsProps) {
 
                     {/* Individual price */}
                     <div className="mt-4 flex items-baseline gap-1">
-                      <span className="text-foreground/40 text-2xl font-light">$</span>
-                      <span className={clsx("text-5xl font-light", plan.highlighted ? "text-accent" : "text-foreground")}>
+                      <span className="text-foreground/40 text-2xl font-bold">$</span>
+                      <span className={clsx("text-5xl font-bold", plan.highlighted ? "text-accent" : "text-foreground")}>
                         {plan.price}
                       </span>
                       <span className="text-sm text-muted-foreground ml-1">/mo</span>
