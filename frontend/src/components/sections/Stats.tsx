@@ -25,10 +25,10 @@ export function Stats() {
               }
             >
               <div className="flex items-baseline justify-center">
-                <span className="text-5xl md:text-6xl font-light text-foreground tracking-tight">
+                <span className="text-5xl md:text-6xl font-semibold text-foreground tracking-tight">
                   {stat.value}
                 </span>
-                <span className="text-5xl md:text-6xl font-light text-accent tracking-tight ml-0.5">
+                <span className="text-5xl md:text-6xl font-semibold text-accent tracking-tight ml-0.5">
                   {stat.suffix}
                 </span>
               </div>
