@@ -96,13 +96,6 @@ export function Services({ services }: ServicesProps) {
                   {/* Hover dim layer */}
                   <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  {/* Top pill */}
-                  <div className="absolute top-3.5 left-3.5">
-                    <span className="inline-block bg-black/55 backdrop-blur-sm text-accent text-[8.5px] tracking-[0.16em] uppercase font-semibold px-2.5 py-1 rounded-full border border-accent/25">
-                      {service.title}
-                    </span>
-                  </div>
-
                   {/* Bottom content */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
                     <Icon className="w-4 h-4 text-accent mb-2.5 opacity-90" />
