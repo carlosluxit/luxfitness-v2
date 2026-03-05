@@ -100,7 +100,7 @@ export function Navbar({ logoUrl }: NavbarProps) {
             <div className="hidden lg:block">
               <Link
                 href="/contact"
-                className="text-[11px] tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-500"
+                className="inline-flex items-center border border-border hover:border-accent/60 px-5 py-2.5 text-[11px] tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-all duration-500"
               >
                 <DecryptedText
                   text="BOOK A TOUR"
