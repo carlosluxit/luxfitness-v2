@@ -14,6 +14,8 @@ interface ContactPageProps {
 
 export function ContactPage({ siteSettings }: ContactPageProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const phone = siteSettings?.phone || SITE_CONFIG.phone;
   const email = siteSettings?.email || SITE_CONFIG.email;
@@ -21,9 +23,39 @@ export function ContactPage({ siteSettings }: ContactPageProps) {
   const instagram = siteSettings?.instagram || SITE_CONFIG.instagram;
   const hours = siteSettings?.hours || [...HOURS];
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      interest: formData.get("interest"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        const json = await res.json();
+        setError(json.error ?? "Something went wrong. Please try again.");
+      }
+    } catch {
+      setError("Could not send message. Please try again or call us directly.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -182,8 +214,12 @@ export function ContactPage({ siteSettings }: ContactPageProps) {
                       />
                     </div>
 
-                    <Button type="submit" className="w-full sm:w-auto">
-                      Send Message
+                    {error && (
+                      <p className="text-sm text-red-400">{error}</p>
+                    )}
+
+                    <Button type="submit" disabled={loading} className="w-full sm:w-auto">
+                      {loading ? "Sending…" : "Send Message"}
                     </Button>
                   </form>
                 )}
