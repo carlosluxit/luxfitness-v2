@@ -76,7 +76,7 @@ const TRAINING = [
     icon: User,
     name: "Individual",
     label: "1-on-1 sessions",
-    highlighted: false,
+    highlighted: true,
     description:
       "Private sessions designed exclusively around your goals with a certified LUX trainer.",
     features: [
@@ -91,7 +91,7 @@ const TRAINING = [
     icon: Users,
     name: "Group Training",
     label: "2 – 4 people",
-    highlighted: true,
+    highlighted: false,
     description:
       "Train with friends or a partner and split the cost without sacrificing attention or quality.",
     features: [
