@@ -40,26 +40,18 @@ export function Navbar({ logoUrl }: NavbarProps) {
 
   return (
     <>
-      {/* Safe-area shield ─────────────────────────────────────────────────────
-          A solid backdrop that fills exactly the iOS notch / status-bar inset.
-          Sits above the navbar (z-[51]) so no page content can bleed through,
-          even during momentum scrolling or rubber-band overscroll. */}
-      <div
-        aria-hidden="true"
-        className="fixed top-0 left-0 right-0 bg-background z-[51] pointer-events-none"
-        style={{ height: "env(safe-area-inset-top)" }}
-      />
-
+      {/* Single fixed nav — background extends from top:0 through the notch.
+          padding-top: env(safe-area-inset-top) pushes content below the notch
+          while bg-background covers the notch area. One solid element, no seam,
+          GPU-composited so iOS Safari cannot let content bleed through. */}
       <nav
         style={{
           paddingTop: "env(safe-area-inset-top)",
-          // Force a dedicated GPU compositing layer so iOS Safari never lets
-          // page content bleed through the fixed navbar during momentum scroll
           transform: "translateZ(0)",
-          willChange: "transform",
+          WebkitTransform: "translateZ(0)",
         }}
         className={clsx(
-          "fixed top-0 left-0 right-0 z-50 bg-background",
+          "fixed top-0 left-0 right-0 z-50 bg-[#060606]",
           "transition-[border-color] duration-700",
           scrolled && "border-b border-border"
         )}
