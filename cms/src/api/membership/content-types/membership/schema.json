@@ -24,6 +24,12 @@
       "type": "decimal",
       "required": true
     },
+    "couplePrice": {
+      "type": "decimal"
+    },
+    "badge": {
+      "type": "string"
+    },
     "interval": {
       "type": "enumeration",
       "enum": ["month", "year"],

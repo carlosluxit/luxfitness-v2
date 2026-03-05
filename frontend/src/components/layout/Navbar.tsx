@@ -2,13 +2,21 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Instagram, Phone } from "lucide-react";
-import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
+import { motion, AnimatePresence } from "motion/react";
+import { Menu, X } from "lucide-react";
+import { NAV_LINKS } from "@/lib/constants";
 import { clsx } from "clsx";
+import DecryptedText from "@/components/reactbits/TextAnimations/DecryptedText";
 
-export function Navbar() {
+const ease = [0.16, 1, 0.3, 1] as const;
+
+interface NavbarProps {
+  logoUrl?: string;
+}
+
+export function Navbar({ logoUrl }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -34,70 +42,85 @@ export function Navbar() {
     <>
       <nav
         className={clsx(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-          scrolled
-            ? "bg-background/90 backdrop-blur-md border-b border-border"
-            : "bg-transparent"
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-700 bg-background",
+          scrolled && "border-b border-border"
         )}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link
-              href="/"
-              className="text-xl font-light tracking-[0.3em] uppercase text-foreground hover:text-accent transition-colors duration-300"
-            >
-              LUX
+            <Link href="/" className="block shrink-0">
+              <Image
+                src={logoUrl ?? "/images/logo.png"}
+                alt="LUX Fitness"
+                width={120}
+                height={54}
+                className="object-contain h-[54px] w-auto"
+                priority
+              />
             </Link>
 
-            {/* Desktop Nav */}
+            {/* Desktop Nav — centered */}
             <div className="hidden lg:flex items-center gap-10">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={clsx(
-                    "text-xs tracking-[0.15em] uppercase transition-colors duration-300",
+                    "relative text-[11px] tracking-[0.15em] uppercase transition-colors duration-500",
                     pathname === link.href
-                      ? "text-accent"
+                      ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   )}
                 >
-                  {link.label}
+                  <DecryptedText
+                    text={link.label.toUpperCase()}
+                    animateOn="hover"
+                    speed={50}
+                    maxIterations={10}
+                    sequential={true}
+                    revealDirection="start"
+                    characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    className="tracking-[0.15em]"
+                    encryptedClassName="tracking-[0.15em] text-muted-foreground"
+                    parentClassName="cursor-pointer"
+                  />
+                  {pathname === link.href && (
+                    <motion.span
+                      layoutId="nav-indicator"
+                      className="absolute -bottom-1 left-0 right-0 h-px bg-accent"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </Link>
               ))}
             </div>
 
-            {/* Desktop Actions */}
-            <div className="hidden lg:flex items-center gap-5">
-              <a
-                href={SITE_CONFIG.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors duration-300"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href={`tel:${SITE_CONFIG.phone.replace(/[^+\d]/g, "")}`}
-                className="text-muted-foreground hover:text-foreground transition-colors duration-300"
-                aria-label="Call us"
-              >
-                <Phone className="w-4 h-4" />
-              </a>
+            {/* Desktop CTA */}
+            <div className="hidden lg:block">
               <Link
-                href="/memberships"
-                className="px-5 py-2.5 bg-accent text-black text-xs tracking-[0.15em] uppercase font-medium hover:bg-accent-hover transition-all duration-300"
+                href="/contact"
+                className="text-[11px] tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors duration-500"
               >
-                Join Now
+                <DecryptedText
+                  text="BOOK A TOUR"
+                  animateOn="hover"
+                  speed={50}
+                  maxIterations={10}
+                  sequential={true}
+                  revealDirection="start"
+                  characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                  className="tracking-[0.15em]"
+                  encryptedClassName="tracking-[0.15em] text-accent/40"
+                  parentClassName="cursor-pointer"
+                />
               </Link>
             </div>
 
             {/* Mobile Toggle */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden text-foreground p-2"
+              className="lg:hidden text-foreground p-2 -mr-2"
               aria-label="Toggle menu"
             >
               {isOpen ? (
@@ -110,51 +133,52 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — full screen overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-background flex flex-col justify-center items-center"
+            transition={{ duration: 0.4, ease }}
+            className="fixed inset-0 z-40 bg-background/98 backdrop-blur-sm flex flex-col justify-end pb-20 px-6"
           >
-            <nav className="flex flex-col items-center gap-8">
+            <nav className="space-y-1">
               {NAV_LINKS.map((link, i) => (
                 <motion.div
                   key={link.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08, duration: 0.4 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.06, duration: 0.5, ease }}
                 >
                   <Link
                     href={link.href}
                     className={clsx(
-                      "text-2xl font-light tracking-[0.2em] uppercase transition-colors duration-300",
+                      "block py-3 text-fluid-display transition-colors duration-300",
                       pathname === link.href
-                        ? "text-accent"
-                        : "text-foreground hover:text-accent"
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
                     )}
                   >
                     {link.label}
                   </Link>
                 </motion.div>
               ))}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: NAV_LINKS.length * 0.08, duration: 0.4 }}
-                className="mt-4"
-              >
-                <Link
-                  href="/memberships"
-                  className="px-8 py-3.5 bg-accent text-black text-xs tracking-[0.15em] uppercase font-medium"
-                >
-                  Join Now
-                </Link>
-              </motion.div>
             </nav>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="mt-12 pt-8 border-t border-border"
+            >
+              <Link
+                href="/contact"
+                className="text-[11px] tracking-[0.15em] uppercase text-muted-foreground"
+              >
+                Book a Tour
+              </Link>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

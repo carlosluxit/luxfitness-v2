@@ -3,23 +3,36 @@
 import { StaggerContainer, StaggerItem } from "@/components/ui/AnimatedSection";
 
 const stats = [
-  { value: "15,000+", label: "Sq. Ft. Facility" },
-  { value: "50+", label: "Pieces of Equipment" },
-  { value: "8+", label: "Expert Trainers" },
-  { value: "1,000+", label: "Active Members" },
+  { value: "4,000", suffix: "+", label: "Sq. Ft. Facility" },
+  { value: "50", suffix: "+", label: "Pieces of Equipment" },
+  { value: "8", suffix: "+", label: "Expert Trainers" },
+  { value: "1,000", suffix: "+", label: "Active Members" },
 ];
 
 export function Stats() {
   return (
-    <section className="py-16 md:py-20 border-y border-border bg-surface">
+    <section className="py-16 md:py-24 border-y border-border bg-background">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
-        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
-          {stats.map((stat) => (
-            <StaggerItem key={stat.label} className="text-center">
-              <div className="text-3xl md:text-4xl font-light text-accent tracking-tight">
-                {stat.value}
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-0">
+          {stats.map((stat, i) => (
+            <StaggerItem
+              key={stat.label}
+              className={
+                "text-center relative" +
+                (i < stats.length - 1
+                  ? " md:border-r md:border-border"
+                  : "")
+              }
+            >
+              <div className="flex items-baseline justify-center">
+                <span className="text-5xl md:text-6xl font-light text-foreground tracking-tight">
+                  {stat.value}
+                </span>
+                <span className="text-5xl md:text-6xl font-light text-accent tracking-tight ml-0.5">
+                  {stat.suffix}
+                </span>
               </div>
-              <div className="mt-2 text-xs tracking-[0.15em] uppercase text-muted-foreground">
+              <div className="mt-3 text-[10px] tracking-[0.2em] uppercase text-muted-foreground">
                 {stat.label}
               </div>
             </StaggerItem>

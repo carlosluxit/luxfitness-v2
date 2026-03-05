@@ -1,84 +1,152 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { motion } from "motion/react";
+import { MoveDown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import BlurText from "@/components/reactbits/TextAnimations/BlurText";
+import ShinyText from "@/components/reactbits/TextAnimations/ShinyText";
+import RotatingText from "@/components/reactbits/TextAnimations/RotatingText";
+import type { CMSSiteSettings } from "@/lib/strapi";
+import { strapiMediaUrl } from "@/lib/strapi/helpers";
 
-export function Hero() {
+const ease = [0.16, 1, 0.3, 1] as const;
+
+interface HeroProps {
+  siteSettings?: CMSSiteSettings;
+}
+
+export function Hero({ siteSettings }: HeroProps) {
+  const posterUrl =
+    strapiMediaUrl(siteSettings?.heroImage) ?? "/images/gym-2.avif";
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+    <section className="relative h-screen min-h-[700px] flex items-end overflow-hidden">
+      {/* Background Video — full screen, loops silently */}
       <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80')",
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" />
+        <motion.div
+          initial={{ scale: 1.06 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 6, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0"
+        >
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            poster={posterUrl}
+          >
+            <source src="/images/video.mp4" type="video/mp4" />
+          </video>
+        </motion.div>
+        {/* Strong base overlay to darken video */}
+        <div className="absolute inset-0 bg-background/55" />
+        {/* Bottom gradient: ensures text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/75 to-transparent" />
+        {/* Left edge fade for content area */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-transparent" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
-          <span className="inline-block text-accent text-xs tracking-[0.3em] uppercase mb-6">
-            Montreal&apos;s Premier Gym
-          </span>
-        </motion.div>
+      {/* Decorative accent line */}
+      <motion.div
+        initial={{ scaleY: 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ duration: 1.2, delay: 1.5, ease }}
+        className="absolute left-6 md:left-10 top-1/4 bottom-1/3 w-px bg-gradient-to-b from-transparent via-accent/30 to-transparent origin-top hidden md:block"
+      />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight leading-[1.05]"
-        >
-          Elevate Your
-          <br />
-          <span className="text-accent">Fitness</span> Experience
-        </motion.h1>
+      {/* Content — bottom-aligned, editorial layout */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 pb-20 md:pb-28">
+        <div className="max-w-4xl">
+          {/* Eyebrow with shiny sweep */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2, ease }}
+          >
+            <ShinyText
+              text="Montreal's Premier Fitness Destination"
+              speed={4}
+              className="text-[11px] tracking-[0.25em] uppercase font-semibold mb-6 md:mb-8 block [text-shadow:0_0_20px_rgba(196,163,90,0.5),0_0_40px_rgba(196,163,90,0.2)]"
+              color="#c4a35a"
+              shineColor="#e8e6e3"
+              spread={120}
+            />
+          </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
-          className="mt-6 text-muted-foreground text-base md:text-lg max-w-xl mx-auto leading-relaxed"
-        >
-          Where performance meets refinement. State-of-the-art equipment,
-          personalized training, and a holistic approach to wellness.
-        </motion.p>
+          {/* Main title with BlurText + RotatingText */}
+          <div className="text-fluid-hero text-foreground">
+            <BlurText
+              text="Elevate Your"
+              delay={120}
+              animateBy="words"
+              direction="bottom"
+              className="text-fluid-hero text-foreground !leading-[0.88]"
+              stepDuration={0.5}
+              easing={[0.16, 1, 0.3, 1]}
+            />
+            <div className="flex items-baseline">
+              <RotatingText
+                texts={["Standard", "Potential", "Lifestyle", "Ambition"]}
+                rotationInterval={3000}
+                mainClassName="text-fluid-hero text-accent !leading-[0.88] overflow-hidden inline-flex"
+                elementLevelClassName="inline-block"
+                splitLevelClassName="inline-flex"
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ y: "100%", opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: "-120%", opacity: 0 }}
+                animatePresenceMode="wait"
+                staggerDuration={0.02}
+                staggerFrom="first"
+              />
+            </div>
+          </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.9, ease: "easeOut" }}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <Button href="/memberships" size="lg" showArrow>
-            View Memberships
-          </Button>
-          <Button href="/services" variant="secondary" size="lg">
-            Explore Services
-          </Button>
-        </motion.div>
+          {/* Description */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.0, ease }}
+            className="mt-8 md:mt-10 max-w-lg"
+          >
+            <p className="text-[15px] text-muted-foreground leading-[1.7]">
+              Where performance meets refinement. State-of-the-art equipment,
+              personalized training, and a holistic approach to wellness — all
+              under one roof.
+            </p>
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2, ease }}
+            className="mt-10 md:mt-12 flex flex-col sm:flex-row items-start gap-6"
+          >
+            <Button href="/memberships">View Memberships</Button>
+            <Button href="/services" variant="outline">
+              Explore Services
+            </Button>
+          </motion.div>
+        </div>
       </div>
 
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        transition={{ delay: 2.0, duration: 1 }}
+        className="absolute bottom-8 right-6 md:right-10 flex flex-col items-center gap-3"
       >
+        <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground/50 [writing-mode:vertical-lr]">
+          Scroll
+        </span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChevronDown className="w-5 h-5 text-muted" />
+          <MoveDown className="w-4 h-4 text-muted-foreground/50" />
         </motion.div>
       </motion.div>
     </section>

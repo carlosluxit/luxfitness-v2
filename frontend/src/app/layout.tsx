@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { getSiteSettings } from "@/lib/strapi";
+import { strapiMediaUrl } from "@/lib/strapi/helpers";
 import "./globals.css";
 
 const inter = Inter({
@@ -37,17 +39,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteSettings = await getSiteSettings();
+
   return (
     <html lang="en" className={inter.variable}>
       <body className="antialiased">
-        <Navbar />
+        <Navbar logoUrl={strapiMediaUrl(siteSettings?.logo) ?? undefined} />
         <main>{children}</main>
-        <Footer />
+        <Footer siteSettings={siteSettings} />
       </body>
     </html>
   );

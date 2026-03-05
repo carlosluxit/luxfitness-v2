@@ -7,7 +7,18 @@ import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/ui/AnimatedSection";
+import type { CMSTeamMember, CMSSiteSettings } from "@/lib/strapi";
+import { strapiMediaUrl } from "@/lib/strapi/helpers";
 import { HOURS } from "@/lib/constants";
+
+// Local coach photos in display order — used when CMS has no photo uploaded yet
+// Order must match the `order` field in Strapi (0, 1, 2, 3)
+const coachLocalPhotos = [
+  "/images/coach_karim.png",
+  "/images/coach_terry.png",
+  "/images/coach_padilla.png",
+  "/images/coach_4.png",
+];
 
 const values = [
   {
@@ -36,34 +47,14 @@ const values = [
   },
 ];
 
-const team = [
-  {
-    name: "Coach Alex",
-    role: "Head Trainer & Boxing Coach",
-    image:
-      "https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=400&q=80",
-  },
-  {
-    name: "Sarah M.",
-    role: "Certified Personal Trainer",
-    image:
-      "https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&q=80",
-  },
-  {
-    name: "David K.",
-    role: "Physiotherapist",
-    image:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80",
-  },
-  {
-    name: "Marco T.",
-    role: "Strength & Conditioning",
-    image:
-      "https://images.unsplash.com/photo-1583468982228-19f19164aee2?w=400&q=80",
-  },
-];
+interface AboutPageProps {
+  teamMembers: CMSTeamMember[];
+  siteSettings?: CMSSiteSettings;
+}
 
-export function AboutPage() {
+export function AboutPage({ teamMembers, siteSettings }: AboutPageProps) {
+  const hours = siteSettings?.hours || [...HOURS];
+
   return (
     <>
       {/* Hero */}
@@ -71,9 +62,10 @@ export function AboutPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <AnimatedSection>
             <SectionHeading
-              label="Our Story"
+              eyebrow="Our Story"
               title="Built on Passion, Driven by Results"
               description="LUX Fitness was born from a simple belief: fitness should be an experience, not just a routine. We set out to create a space that elevates every aspect of your wellness journey."
+              size="large"
             />
           </AnimatedSection>
         </div>
@@ -88,11 +80,10 @@ export function AboutPage() {
                 <div
                   className="absolute inset-0 bg-cover bg-center"
                   style={{
-                    backgroundImage:
-                      "url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800&q=80')",
+                    backgroundImage: "url('/images/gym-1.avif')",
                   }}
                 />
-                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-accent" />
+                <div className="absolute bottom-0 left-0 w-full h-px bg-accent/40" />
               </div>
             </AnimatedSection>
 
@@ -137,7 +128,7 @@ export function AboutPage() {
                         Open Daily
                       </p>
                       <p className="text-sm text-muted-foreground mt-0.5">
-                        {HOURS[0].hours}
+                        {hours[0]?.hours || "5:00 AM - 11:00 PM"}
                       </p>
                     </div>
                   </div>
@@ -153,7 +144,7 @@ export function AboutPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <AnimatedSection>
             <SectionHeading
-              label="Our Values"
+              eyebrow="Our Values"
               title="What We Stand For"
             />
           </AnimatedSection>
@@ -181,34 +172,37 @@ export function AboutPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <AnimatedSection>
             <SectionHeading
-              label="The Team"
+              eyebrow="The Team"
               title="Meet Your Coaches"
               description="Certified professionals dedicated to your success. Every trainer at LUX brings expertise, passion, and a commitment to helping you reach your potential."
             />
           </AnimatedSection>
 
           <StaggerContainer className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member) => (
-              <StaggerItem key={member.name}>
-                <div className="group">
-                  <div className="relative aspect-[3/4] overflow-hidden">
-                    <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                      style={{ backgroundImage: `url('${member.image}')` }}
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
+            {(teamMembers ?? []).map((member, i) => {
+              const photoUrl = strapiMediaUrl(member.photo) || coachLocalPhotos[i] || "/images/coach_4.png";
+              return (
+                <StaggerItem key={member.id}>
+                  <div className="group">
+                    <div className="relative aspect-[3/4] overflow-hidden">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        style={{ backgroundImage: `url('${photoUrl}')` }}
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
+                    </div>
+                    <div className="mt-4">
+                      <h3 className="text-sm font-medium text-foreground">
+                        {member.name}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {member.role}
+                      </p>
+                    </div>
                   </div>
-                  <div className="mt-4">
-                    <h3 className="text-sm font-medium text-foreground">
-                      {member.name}
-                    </h3>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {member.role}
-                    </p>
-                  </div>
-                </div>
-              </StaggerItem>
-            ))}
+                </StaggerItem>
+              );
+            })}
           </StaggerContainer>
         </div>
       </section>

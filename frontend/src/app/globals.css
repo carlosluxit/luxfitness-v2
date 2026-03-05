@@ -1,31 +1,27 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #000000;
-  --color-foreground: #f5f5f5;
-  --color-surface: #0a0a0a;
-  --color-surface-elevated: #141414;
-  --color-surface-hover: #1a1a1a;
-  --color-border: #1f1f1f;
-  --color-border-subtle: #141414;
-  --color-muted: #737373;
-  --color-muted-foreground: #a3a3a3;
-  --color-accent: #c8a960;
-  --color-accent-dim: rgba(200, 169, 96, 0.1);
-  --color-accent-hover: #d4b56e;
+  --color-background: #060606;
+  --color-foreground: #e8e6e3;
+  --color-surface: #0b0b0b;
+  --color-surface-elevated: #111111;
+  --color-surface-hover: #161616;
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-border-subtle: rgba(255, 255, 255, 0.03);
+  --color-muted: #3a3a3a;
+  --color-muted-foreground: #7a7a76;
+  --color-accent: #c4a35a;
+  --color-accent-dim: rgba(196, 163, 90, 0.05);
+  --color-accent-hover: #d4b46a;
   --font-sans: var(--font-inter);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 body {
@@ -35,37 +31,142 @@ body {
   overflow-x: hidden;
 }
 
-::selection {
-  background: var(--color-accent);
-  color: #000;
+/* Film grain — analog depth */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
 }
 
-/* Scrollbar */
+::selection {
+  background: var(--color-accent);
+  color: #060606;
+}
+
+/* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 3px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-background);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 1px;
+  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-muted);
+  background: rgba(196, 163, 90, 0.25);
 }
 
-/* Smooth image loading */
-img {
-  opacity: 1;
-  transition: opacity 0.3s ease;
+/* Firefox scrollbar */
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
+  }
 }
 
-/* Focus styles */
 :focus-visible {
   outline: 1px solid var(--color-accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
+}
+
+/* ─── Fluid type scale ─── */
+.text-fluid-hero {
+  font-size: clamp(3.5rem, 9vw, 9.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.text-fluid-display {
+  font-size: clamp(2.75rem, 5.5vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.text-fluid-title {
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* ─── Accent horizontal rule ─── */
+.accent-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  border: none;
+}
+
+/* ─── Glass morphism ─── */
+.glass {
+  background: rgba(11, 11, 11, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ─── Shimmer loading animation ─── */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.04) 20%,
+    rgba(196, 163, 90, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 80%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* ─── Cursor smoothing for interactive elements ─── */
+a,
+button,
+[role="button"],
+input,
+select,
+textarea,
+label[for],
+summary,
+[tabindex]:not([tabindex="-1"]) {
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.3s ease,
+    background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+a:active,
+button:active,
+[role="button"]:active {
+  transform: scale(0.985);
+}
+
+input,
+select,
+textarea {
+  cursor: text;
 }

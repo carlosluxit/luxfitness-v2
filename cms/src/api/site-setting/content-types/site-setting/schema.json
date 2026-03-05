@@ -43,6 +43,11 @@
       "multiple": false,
       "allowedTypes": ["images"]
     },
+    "aboutImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
     "hours": {
       "type": "json"
     }

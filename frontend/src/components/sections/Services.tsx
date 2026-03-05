@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   Dumbbell,
   UserCheck,
@@ -10,7 +11,7 @@ import {
   Pill,
   Coffee,
 } from "lucide-react";
-import { SERVICES } from "@/lib/constants";
+import type { CMSService } from "@/lib/strapi";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
   AnimatedSection,
@@ -19,7 +20,7 @@ import {
 } from "@/components/ui/AnimatedSection";
 import { Button } from "@/components/ui/Button";
 
-const iconMap = {
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Dumbbell,
   UserCheck,
   Swords,
@@ -28,33 +29,92 @@ const iconMap = {
   Scissors,
   Pill,
   Coffee,
-} as const;
+};
 
-export function Services() {
+// One photo per service — order matches CMS order
+const SERVICE_IMAGES = [
+  "/images/snap-equipment.png",         // State-of-the-Art Gym
+  "/images/snap-personal-training.png", // Personal Training
+  "/images/snap-boxing.png",            // Boxing
+  "/images/snap-functional.png",        // Functional Training
+  "/images/snap-physio.png",            // Physiotherapy
+  "/images/snap-barbershop.png",        // Barbershop
+  "/images/snap-supplements.png",       // Supplement Store
+  "/images/snap-cafe.png",              // Healthy Café
+];
+
+// Focus point for each image so the key subject stays visible in the card crop
+const SERVICE_FOCUS = [
+  "center center", // State-of-the-Art Gym
+  "center 15%",    // Personal Training  — show trainer + client faces
+  "center 25%",    // Boxing             — centre on the boxing action
+  "center 20%",    // Functional Training — show upper body + barbell
+  "center 10%",    // Physiotherapy      — keep sign + face in frame
+  "center 30%",    // Barbershop         — show barber's hands + client
+  "center center", // Supplement Store
+  "center center", // Healthy Café
+];
+
+interface ServicesProps {
+  services: CMSService[];
+}
+
+export function Services({ services }: ServicesProps) {
   return (
-    <section className="py-24 md:py-32 bg-surface">
+    <section className="py-24 md:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         <AnimatedSection>
           <SectionHeading
-            label="What We Offer"
+            eyebrow="What We Offer"
             title="A Complete Wellness Ecosystem"
             description="More than a gym. A full-service destination designed around every dimension of your fitness and wellbeing."
           />
         </AnimatedSection>
 
-        <StaggerContainer className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border">
-          {SERVICES.map((service) => {
-            const Icon = iconMap[service.icon];
+        <StaggerContainer className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          {(services ?? []).map((service, i) => {
+            const Icon = iconMap[service.icon] || Dumbbell;
+            const imgSrc = SERVICE_IMAGES[i] ?? SERVICE_IMAGES[0];
+            const imgFocus = SERVICE_FOCUS[i] ?? "center center";
             return (
               <StaggerItem key={service.id}>
-                <div className="bg-surface p-8 md:p-10 h-full group hover:bg-surface-elevated transition-colors duration-500">
-                  <Icon className="w-5 h-5 text-accent mb-6" />
-                  <h3 className="text-sm font-medium tracking-wide text-foreground">
-                    {service.title}
-                  </h3>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                    {service.description}
-                  </p>
+                <div className="group relative aspect-[3/4] overflow-hidden cursor-default">
+                  {/* Photo */}
+                  <Image
+                    src={imgSrc}
+                    alt={service.title}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    style={{ objectPosition: imgFocus }}
+                  />
+
+                  {/* Persistent gradient — keeps content legible */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+
+                  {/* Hover dim layer */}
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  {/* Top pill */}
+                  <div className="absolute top-3.5 left-3.5">
+                    <span className="inline-block bg-black/55 backdrop-blur-sm text-accent text-[8.5px] tracking-[0.16em] uppercase font-semibold px-2.5 py-1 rounded-full border border-accent/25">
+                      {service.title}
+                    </span>
+                  </div>
+
+                  {/* Bottom content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+                    <Icon className="w-4 h-4 text-accent mb-2.5 opacity-90" />
+                    <h3 className="text-sm font-semibold text-foreground tracking-wide leading-snug">
+                      {service.title}
+                    </h3>
+                    {/* Description slides up on hover */}
+                    <div className="overflow-hidden transition-all duration-500 ease-out max-h-0 group-hover:max-h-20">
+                      <p className="mt-1.5 text-xs text-foreground/55 leading-relaxed">
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </StaggerItem>
             );
@@ -62,7 +122,7 @@ export function Services() {
         </StaggerContainer>
 
         <AnimatedSection className="mt-12 text-center">
-          <Button href="/services" variant="secondary" showArrow>
+          <Button href="/services" variant="outline">
             All Services
           </Button>
         </AnimatedSection>

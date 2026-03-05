@@ -6,9 +6,20 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { Button } from "@/components/ui/Button";
 import { SITE_CONFIG, HOURS } from "@/lib/constants";
+import type { CMSSiteSettings } from "@/lib/strapi";
 
-export function ContactPage() {
+interface ContactPageProps {
+  siteSettings?: CMSSiteSettings;
+}
+
+export function ContactPage({ siteSettings }: ContactPageProps) {
   const [submitted, setSubmitted] = useState(false);
+
+  const phone = siteSettings?.phone || SITE_CONFIG.phone;
+  const email = siteSettings?.email || SITE_CONFIG.email;
+  const address = siteSettings?.address || SITE_CONFIG.address;
+  const instagram = siteSettings?.instagram || SITE_CONFIG.instagram;
+  const hours = siteSettings?.hours || [...HOURS];
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -22,9 +33,10 @@ export function ContactPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <AnimatedSection>
             <SectionHeading
-              label="Contact"
+              eyebrow="Contact"
               title="Get in Touch"
               description="Book a tour, ask about memberships, or simply say hello. We're here to help you start your journey."
+              size="large"
             />
           </AnimatedSection>
         </div>
@@ -38,7 +50,7 @@ export function ContactPage() {
             <div className="lg:col-span-3">
               <AnimatedSection>
                 {submitted ? (
-                  <div className="border border-accent/30 bg-accent-dim p-10 text-center">
+                  <div className="border border-accent/20 bg-accent-dim p-10 text-center">
                     <Send className="w-6 h-6 text-accent mx-auto mb-4" />
                     <h3 className="text-xl font-light text-foreground">
                       Message Sent
@@ -54,7 +66,7 @@ export function ContactPage() {
                       <div>
                         <label
                           htmlFor="firstName"
-                          className="block text-xs tracking-[0.15em] uppercase text-muted-foreground font-medium mb-2"
+                          className="block text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-2"
                         >
                           First Name
                         </label>
@@ -70,7 +82,7 @@ export function ContactPage() {
                       <div>
                         <label
                           htmlFor="lastName"
-                          className="block text-xs tracking-[0.15em] uppercase text-muted-foreground font-medium mb-2"
+                          className="block text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-2"
                         >
                           Last Name
                         </label>
@@ -88,7 +100,7 @@ export function ContactPage() {
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-xs tracking-[0.15em] uppercase text-muted-foreground font-medium mb-2"
+                        className="block text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-2"
                       >
                         Email
                       </label>
@@ -105,7 +117,7 @@ export function ContactPage() {
                     <div>
                       <label
                         htmlFor="phone"
-                        className="block text-xs tracking-[0.15em] uppercase text-muted-foreground font-medium mb-2"
+                        className="block text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-2"
                       >
                         Phone
                       </label>
@@ -121,9 +133,9 @@ export function ContactPage() {
                     <div>
                       <label
                         htmlFor="interest"
-                        className="block text-xs tracking-[0.15em] uppercase text-muted-foreground font-medium mb-2"
+                        className="block text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-2"
                       >
-                        I'm interested in
+                        I&apos;m interested in
                       </label>
                       <select
                         id="interest"
@@ -157,7 +169,7 @@ export function ContactPage() {
                     <div>
                       <label
                         htmlFor="message"
-                        className="block text-xs tracking-[0.15em] uppercase text-muted-foreground font-medium mb-2"
+                        className="block text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-2"
                       >
                         Message
                       </label>
@@ -170,7 +182,7 @@ export function ContactPage() {
                       />
                     </div>
 
-                    <Button type="submit" size="lg" showArrow className="w-full sm:w-auto">
+                    <Button type="submit" className="w-full sm:w-auto">
                       Send Message
                     </Button>
                   </form>
@@ -184,26 +196,26 @@ export function ContactPage() {
                 <div className="space-y-8">
                   {/* Contact Info */}
                   <div className="border border-border p-8">
-                    <h3 className="text-xs tracking-[0.2em] uppercase text-foreground font-medium mb-6">
+                    <h3 className="text-[10px] tracking-[0.2em] uppercase text-foreground mb-6">
                       Contact Info
                     </h3>
                     <ul className="space-y-5">
                       <li>
                         <a
-                          href={`tel:${SITE_CONFIG.phone.replace(/[^+\d]/g, "")}`}
+                          href={`tel:${phone.replace(/[^+\d]/g, "")}`}
                           className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
                         >
                           <Phone className="w-4 h-4 text-accent shrink-0" />
-                          {SITE_CONFIG.phone}
+                          {phone}
                         </a>
                       </li>
                       <li>
                         <a
-                          href={`mailto:${SITE_CONFIG.email}`}
+                          href={`mailto:${email}`}
                           className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
                         >
                           <Mail className="w-4 h-4 text-accent shrink-0" />
-                          {SITE_CONFIG.email}
+                          {email}
                         </a>
                       </li>
                       <li>
@@ -214,12 +226,12 @@ export function ContactPage() {
                           className="flex items-start gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
                         >
                           <MapPin className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                          {SITE_CONFIG.address}
+                          {address}
                         </a>
                       </li>
                       <li>
                         <a
-                          href={SITE_CONFIG.instagram}
+                          href={instagram}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
@@ -233,11 +245,11 @@ export function ContactPage() {
 
                   {/* Hours */}
                   <div className="border border-border p-8">
-                    <h3 className="text-xs tracking-[0.2em] uppercase text-foreground font-medium mb-6">
+                    <h3 className="text-[10px] tracking-[0.2em] uppercase text-foreground mb-6">
                       Hours
                     </h3>
                     <ul className="space-y-4">
-                      {HOURS.map((h) => (
+                      {hours.map((h) => (
                         <li
                           key={h.day}
                           className="flex items-start gap-3 text-sm text-muted-foreground"
@@ -274,7 +286,7 @@ export function ContactPage() {
               href="https://maps.google.com/?q=5005+Boulevard+Metropolitain+E+Saint-Leonard+QC"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block mt-4 text-xs tracking-[0.15em] uppercase text-accent hover:text-accent-hover transition-colors duration-300"
+              className="inline-block mt-4 text-[10px] tracking-[0.15em] uppercase text-accent hover:text-accent-hover transition-colors duration-300"
             >
               Open in Google Maps
             </a>

@@ -1,48 +1,44 @@
 import Link from "next/link";
-import {
-  Instagram,
-  Phone,
-  Mail,
-  MapPin,
-  ArrowUpRight,
-  Clock,
-} from "lucide-react";
+import Image from "next/image";
+import { Instagram, Phone, Mail, MapPin } from "lucide-react";
 import { SITE_CONFIG, NAV_LINKS, HOURS } from "@/lib/constants";
+import type { CMSSiteSettings } from "@/lib/strapi";
 
-export function Footer() {
+interface FooterProps {
+  siteSettings?: CMSSiteSettings;
+}
+
+export function Footer({ siteSettings }: FooterProps) {
+  const phone = siteSettings?.phone || SITE_CONFIG.phone;
+  const email = siteSettings?.email || SITE_CONFIG.email;
+  const address = siteSettings?.address || SITE_CONFIG.address;
+  const instagram = siteSettings?.instagram || SITE_CONFIG.instagram;
+  const hours = siteSettings?.hours || [...HOURS];
+
   return (
-    <footer className="border-t border-border bg-surface">
+    <footer className="border-t border-border bg-background">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         {/* Main Footer */}
-        <div className="py-16 md:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+        <div className="py-16 md:py-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
           {/* Brand */}
-          <div className="lg:col-span-1">
-            <Link
-              href="/"
-              className="text-xl font-light tracking-[0.3em] uppercase text-foreground"
-            >
-              LUX
+          <div className="lg:col-span-4">
+            <Link href="/" className="relative w-[100px] h-[44px] block">
+              <Image
+                src="/images/logo.png"
+                alt="LUX Fitness"
+                fill
+                className="object-contain"
+              />
             </Link>
-            <p className="mt-4 text-muted-foreground text-sm leading-relaxed max-w-xs">
-              Montreal&apos;s premier luxury fitness destination. Where
-              performance meets refinement.
+            <p className="mt-6 text-sm text-muted-foreground leading-relaxed max-w-xs">
+              Montreal&apos;s premier fitness destination. Where performance
+              meets refinement.
             </p>
-            <div className="flex items-center gap-4 mt-6">
-              <a
-                href={SITE_CONFIG.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-border text-muted-foreground hover:text-accent hover:border-accent transition-all duration-300"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-            </div>
           </div>
 
           {/* Navigation */}
-          <div>
-            <h3 className="text-xs tracking-[0.2em] uppercase text-foreground font-medium mb-6">
+          <div className="lg:col-span-2">
+            <h3 className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-6">
               Navigate
             </h3>
             <ul className="space-y-3">
@@ -50,10 +46,9 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 inline-flex items-center gap-1 group"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-500"
                   >
                     {link.label}
-                    <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-0.5 translate-x-[-2px] group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
                   </Link>
                 </li>
               ))}
@@ -61,27 +56,27 @@ export function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
-            <h3 className="text-xs tracking-[0.2em] uppercase text-foreground font-medium mb-6">
+          <div className="lg:col-span-3">
+            <h3 className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-6">
               Contact
             </h3>
             <ul className="space-y-4">
               <li>
                 <a
-                  href={`tel:${SITE_CONFIG.phone.replace(/[^+\d]/g, "")}`}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 flex items-center gap-3"
+                  href={`tel:${phone.replace(/[^+\d]/g, "")}`}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-500 flex items-center gap-3"
                 >
-                  <Phone className="w-4 h-4 text-accent shrink-0" />
-                  {SITE_CONFIG.phone}
+                  <Phone className="w-3.5 h-3.5 text-accent/60 shrink-0" />
+                  {phone}
                 </a>
               </li>
               <li>
                 <a
-                  href={`mailto:${SITE_CONFIG.email}`}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 flex items-center gap-3"
+                  href={`mailto:${email}`}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-500 flex items-center gap-3"
                 >
-                  <Mail className="w-4 h-4 text-accent shrink-0" />
-                  {SITE_CONFIG.email}
+                  <Mail className="w-3.5 h-3.5 text-accent/60 shrink-0" />
+                  {email}
                 </a>
               </li>
               <li>
@@ -89,32 +84,37 @@ export function Footer() {
                   href="https://maps.google.com/?q=5005+Boulevard+Metropolitain+E+Saint-Leonard+QC"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 flex items-start gap-3"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-500 flex items-start gap-3"
                 >
-                  <MapPin className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                  {SITE_CONFIG.address}
+                  <MapPin className="w-3.5 h-3.5 text-accent/60 shrink-0 mt-0.5" />
+                  {address}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-500 flex items-center gap-3"
+                >
+                  <Instagram className="w-3.5 h-3.5 text-accent/60 shrink-0" />
+                  @luxfitnessmtl
                 </a>
               </li>
             </ul>
           </div>
 
           {/* Hours */}
-          <div>
-            <h3 className="text-xs tracking-[0.2em] uppercase text-foreground font-medium mb-6">
+          <div className="lg:col-span-3">
+            <h3 className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-6">
               Hours
             </h3>
             <ul className="space-y-3">
-              {HOURS.map((h) => (
-                <li
-                  key={h.day}
-                  className="flex items-start gap-3 text-sm text-muted-foreground"
-                >
-                  <Clock className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-foreground">{h.day}</span>
-                    <br />
-                    {h.hours}
-                  </div>
+              {hours.map((h) => (
+                <li key={h.day} className="text-sm text-muted-foreground">
+                  <span className="text-foreground/80">{h.day}</span>
+                  <br />
+                  {h.hours}
                 </li>
               ))}
             </ul>
@@ -123,19 +123,19 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="py-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted">
-            &copy; {new Date().getFullYear()} LUX Fitness. All rights reserved.
+          <p className="text-[11px] text-muted-foreground/50">
+            &copy; {new Date().getFullYear()} LUX Fitness
           </p>
           <div className="flex items-center gap-6">
             <Link
               href="/privacy"
-              className="text-xs text-muted hover:text-muted-foreground transition-colors duration-300"
+              className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors duration-500"
             >
               Privacy
             </Link>
             <Link
               href="/terms"
-              className="text-xs text-muted hover:text-muted-foreground transition-colors duration-300"
+              className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors duration-500"
             >
               Terms
             </Link>

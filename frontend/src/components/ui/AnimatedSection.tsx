@@ -1,14 +1,17 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion, type Variants } from "motion/react";
 import { type ReactNode } from "react";
 
+/* Smoother spring-like ease curve */
+const ease: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 32 },
+  hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.9, ease },
   },
 };
 
@@ -16,14 +19,14 @@ const fadeIn: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.8, ease },
   },
 };
 
 const staggerContainer: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+    transition: { staggerChildren: 0.12, delayChildren: 0.05 },
   },
 };
 
@@ -42,20 +45,22 @@ export function AnimatedSection({
   variant = "fadeUp",
   delay = 0,
 }: AnimatedSectionProps) {
-  const selectedVariant = variants[variant];
+  const v = variants[variant];
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-100px" }}
       variants={{
-        hidden: selectedVariant.hidden,
+        hidden: v.hidden,
         visible: {
-          ...((selectedVariant.visible as Record<string, unknown>) || {}),
+          ...((v.visible as Record<string, unknown>) || {}),
           transition: {
             ...((
-              (selectedVariant.visible as Record<string, unknown>)
-                ?.transition as Record<string, unknown>
+              (v.visible as Record<string, unknown>)?.transition as Record<
+                string,
+                unknown
+              >
             ) || {}),
             delay,
           },
@@ -79,7 +84,7 @@ export function StaggerContainer({
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: true, margin: "-80px" }}
       variants={staggerContainer}
       className={className}
     >
