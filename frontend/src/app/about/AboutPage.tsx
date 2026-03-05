@@ -92,7 +92,7 @@ export function AboutPage({ teamMembers, siteSettings }: AboutPageProps) {
                   for those who refuse to settle for average.
                 </p>
                 <p className="mt-6 text-muted-foreground leading-relaxed">
-                  Our 15,000+ square foot facility houses state-of-the-art Matrix
+                  Our 4,000+ square foot facility houses state-of-the-art Matrix
                   equipment, a dedicated boxing zone, functional training area,
                   in-house physiotherapy, a barbershop, supplement store, and a
                   healthy cafe. Every corner is purposefully designed to support
