@@ -4,12 +4,11 @@ import TiltedCard from "@/components/reactbits/Components/TiltedCard";
 import { AnimatedSection, StaggerContainer, StaggerItem } from "@/components/ui/AnimatedSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
-// One card per service — matches the 8 services offered at LUX
+// Gallery images — one per key area of the facility
 const images = [
   { src: "/images/gym-2.avif",  caption: "Gym" },
   { src: "/images/lux-8.jpg",   caption: "Personal Training" },
   { src: "/images/gym-1.avif",  caption: "Boxing" },
-  { src: "/images/lux-9.jpg",   caption: "Functional Training" },
   { src: "/images/lux-6.jpg",   caption: "Physiotherapy" },
   { src: "/images/gym-5.avif",  caption: "Barbershop" },
   { src: "/images/gym-6.avif",  caption: "Supplement Store" },
