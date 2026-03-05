@@ -28,6 +28,11 @@ export const metadata: Metadata = {
     "gym Montreal",
     "fitness centre Saint-Leonard",
   ],
+  icons: {
+    icon: "/images/favicon.png",
+    shortcut: "/images/favicon.png",
+    apple: "/images/favicon.png",
+  },
   openGraph: {
     title: "LUX Fitness | Montreal's Premier Luxury Gym",
     description:
