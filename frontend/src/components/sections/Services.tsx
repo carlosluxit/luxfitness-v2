@@ -63,7 +63,7 @@ interface ServicesProps {
 }
 
 export function Services({ services }: ServicesProps) {
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<number | null>(null);
 
   return (
     <section className="py-24 md:py-32 bg-background">
