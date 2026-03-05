@@ -19,7 +19,7 @@ export function Hero({ siteSettings }: HeroProps) {
   const posterUrl =
     strapiMediaUrl(siteSettings?.heroImage) ?? "/images/gym-2.avif";
   return (
-    <section className="relative h-screen min-h-[700px] flex items-end overflow-hidden">
+    <section className="relative h-[100dvh] min-h-[700px] flex items-end overflow-hidden">
       {/* Background Video — full screen, loops silently */}
       <div className="absolute inset-0">
         <motion.div

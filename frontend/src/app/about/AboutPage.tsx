@@ -58,7 +58,7 @@ export function AboutPage({ teamMembers, siteSettings }: AboutPageProps) {
   return (
     <>
       {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-background">
+      <section className="relative pt-40 pb-20 md:pt-48 md:pb-28 bg-background">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <AnimatedSection>
             <SectionHeading
