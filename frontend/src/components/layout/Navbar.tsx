@@ -40,10 +40,21 @@ export function Navbar({ logoUrl }: NavbarProps) {
 
   return (
     <>
-      {/* Single fixed nav — background extends from top:0 through the notch.
-          padding-top: env(safe-area-inset-top) pushes content below the notch
-          while bg-background covers the notch area. One solid element, no seam,
-          GPU-composited so iOS Safari cannot let content bleed through. */}
+      {/* ── iOS Notch / Safe-Area Cover ────────────────────────────────────────
+          A razor-thin strip that sits at the absolute top of the screen and
+          fills exactly the safe-area-inset-top zone with solid #060606.
+          z-[9999] guarantees nothing — no Framer Motion layer, no modal, no
+          scroll compositor — can ever bleed content through the notch.
+          pointer-events-none so it never swallows taps. */}
+      <div
+        aria-hidden="true"
+        className="fixed top-0 left-0 right-0 pointer-events-none z-[9999]"
+        style={{
+          height: "env(safe-area-inset-top)",
+          background: "#060606",
+        }}
+      />
+
       <nav
         style={{
           paddingTop: "env(safe-area-inset-top)",
