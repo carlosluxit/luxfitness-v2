@@ -40,6 +40,16 @@ export function Navbar({ logoUrl }: NavbarProps) {
 
   return (
     <>
+      {/* Safe-area shield ─────────────────────────────────────────────────────
+          A solid backdrop that fills exactly the iOS notch / status-bar inset.
+          Sits above the navbar (z-[51]) so no page content can bleed through,
+          even during momentum scrolling or rubber-band overscroll. */}
+      <div
+        aria-hidden="true"
+        className="fixed top-0 left-0 right-0 bg-background z-[51] pointer-events-none"
+        style={{ height: "env(safe-area-inset-top)" }}
+      />
+
       <nav
         style={{ paddingTop: "env(safe-area-inset-top)" }}
         className={clsx(

@@ -16,6 +16,9 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  // Colours the iOS/Android browser chrome (status bar + address bar strip)
+  // to match the site background so there's no contrast break at the top edge
+  themeColor: "#060606",
 };
 
 export const metadata: Metadata = {

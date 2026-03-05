@@ -17,6 +17,10 @@
 }
 
 html {
+  /* Must be set on <html> (not just body) so iOS Safari fills the status-bar /
+     notch area and overscroll rubber-band region with the correct dark colour.
+     Without this, iOS falls back to white in those zones. */
+  background: #060606;
   scroll-behavior: smooth;
   scroll-padding-top: calc(5rem + env(safe-area-inset-top)); /* account for fixed navbar */
   -webkit-font-smoothing: antialiased;
