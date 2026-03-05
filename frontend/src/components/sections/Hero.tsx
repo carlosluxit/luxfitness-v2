@@ -41,6 +41,17 @@ export function Hero({ siteSettings }: HeroProps) {
         </motion.div>
         {/* Strong base overlay to darken video */}
         <div className="absolute inset-0 bg-background/40" />
+        {/* Navbar-area coverage — solid site bg fading to transparent.
+            Whatever scrolls behind the fixed nav on iOS Safari is #060606,
+            identical to the navbar, so any compositing-lag bleed is invisible. */}
+        <div
+          className="absolute top-0 left-0 right-0 z-10 pointer-events-none"
+          style={{
+            height: "calc(env(safe-area-inset-top) + 120px)",
+            background:
+              "linear-gradient(to bottom, #060606 40%, transparent 100%)",
+          }}
+        />
         {/* Mobile only: mask top-left gym sign from video frame */}
         <div className="absolute top-0 left-0 right-0 h-36 bg-gradient-to-b from-background via-background/50 to-transparent md:hidden" />
         {/* Bottom gradient: ensures text readability */}
