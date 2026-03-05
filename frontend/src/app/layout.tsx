@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | LUX Fitness",
   },
   description:
-    "Montreal's premier luxury fitness destination in Saint-Leonard. State-of-the-art equipment, personalized training, boxing, physiotherapy, barbershop, and more.",
+    "Montreal's premier luxury fitness center in Saint-Leonard. State-of-the-art equipment, personalized training, boxing, physiotherapy, barbershop, and more.",
   keywords: [
     "luxury gym Montreal",
     "premium fitness Saint-Leonard",

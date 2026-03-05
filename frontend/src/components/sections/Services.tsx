@@ -4,7 +4,7 @@ import Image from "next/image";
 import {
   Dumbbell,
   UserCheck,
-  Swords,
+  HandFist,
   Activity,
   HeartPulse,
   Scissors,
@@ -23,7 +23,8 @@ import { Button } from "@/components/ui/Button";
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Dumbbell,
   UserCheck,
-  Swords,
+  HandFist,
+  Swords: HandFist, // legacy fallback
   Activity,
   HeartPulse,
   Scissors,

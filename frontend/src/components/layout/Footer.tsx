@@ -31,7 +31,7 @@ export function Footer({ siteSettings }: FooterProps) {
               />
             </Link>
             <p className="mt-6 text-sm text-muted-foreground leading-relaxed max-w-xs">
-              Montreal&apos;s premier fitness destination. Where performance
+              Montreal&apos;s premier fitness center. Where performance
               meets refinement.
             </p>
           </div>
