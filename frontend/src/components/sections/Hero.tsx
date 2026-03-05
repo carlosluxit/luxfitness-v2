@@ -36,17 +36,17 @@ export function Hero({ siteSettings }: HeroProps) {
             className="absolute inset-0 w-full h-full object-cover [object-position:60%_center] md:[object-position:center_center]"
             poster={posterUrl}
           >
-            <source src="/images/video.mp4" type="video/mp4" />
+            <source src="/images/video2.mp4" type="video/mp4" />
           </video>
         </motion.div>
         {/* Strong base overlay to darken video */}
-        <div className="absolute inset-0 bg-background/55" />
+        <div className="absolute inset-0 bg-background/40" />
         {/* Mobile only: mask top-left gym sign from video frame */}
-        <div className="absolute top-0 left-0 right-0 h-36 bg-gradient-to-b from-background via-background/70 to-transparent md:hidden" />
+        <div className="absolute top-0 left-0 right-0 h-36 bg-gradient-to-b from-background via-background/50 to-transparent md:hidden" />
         {/* Bottom gradient: ensures text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/75 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-transparent" />
         {/* Left edge fade for content area */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/35 via-transparent to-transparent" />
       </div>
 
       {/* Decorative accent line */}

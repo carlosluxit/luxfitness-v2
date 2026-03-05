@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import {
   Dumbbell,
   UserCheck,
@@ -19,6 +20,7 @@ import {
   StaggerItem,
 } from "@/components/ui/AnimatedSection";
 import { Button } from "@/components/ui/Button";
+import { clsx } from "clsx";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Dumbbell,
@@ -61,6 +63,8 @@ interface ServicesProps {
 }
 
 export function Services({ services }: ServicesProps) {
+  const [activeId, setActiveId] = useState<string | null>(null);
+
   return (
     <section className="py-24 md:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -77,24 +81,39 @@ export function Services({ services }: ServicesProps) {
             const Icon = iconMap[service.icon] || Dumbbell;
             const imgSrc = SERVICE_IMAGES[i] ?? SERVICE_IMAGES[0];
             const imgFocus = SERVICE_FOCUS[i] ?? "center center";
+            const isActive = activeId === service.id;
             return (
               <StaggerItem key={service.id}>
-                <div className="group relative aspect-[3/4] overflow-hidden cursor-default">
+                <div
+                  className={clsx(
+                    "group relative aspect-[3/4] overflow-hidden cursor-default transition-all duration-300",
+                    isActive
+                      ? "ring-1 ring-accent/60"
+                      : "ring-0"
+                  )}
+                  onClick={() => setActiveId(isActive ? null : service.id)}
+                >
                   {/* Photo */}
                   <Image
                     src={imgSrc}
                     alt={service.title}
                     fill
                     sizes="(max-width: 768px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    className={clsx(
+                      "object-cover transition-transform duration-700 ease-out group-hover:scale-105",
+                      isActive && "scale-105"
+                    )}
                     style={{ objectPosition: imgFocus }}
                   />
 
                   {/* Persistent gradient — keeps content legible */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
 
-                  {/* Hover dim layer */}
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {/* Hover / active dim layer */}
+                  <div className={clsx(
+                    "absolute inset-0 bg-black/30 transition-opacity duration-500",
+                    isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                  )} />
 
                   {/* Bottom content */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
@@ -102,8 +121,11 @@ export function Services({ services }: ServicesProps) {
                     <h3 className="text-sm font-semibold text-foreground tracking-wide leading-snug">
                       {service.title}
                     </h3>
-                    {/* Description slides up on hover */}
-                    <div className="overflow-hidden transition-all duration-500 ease-out max-h-0 group-hover:max-h-20">
+                    {/* Description slides up on hover (desktop) or tap (mobile) */}
+                    <div className={clsx(
+                      "overflow-hidden transition-all duration-500 ease-out",
+                      isActive ? "max-h-20" : "max-h-0 group-hover:max-h-20"
+                    )}>
                       <p className="mt-1.5 text-xs text-foreground/55 leading-relaxed">
                         {service.description}
                       </p>
