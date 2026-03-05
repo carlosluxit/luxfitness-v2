@@ -7,6 +7,7 @@ import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/ui/AnimatedSection";
+import { Button } from "@/components/ui/Button";
 import type { CMSTeamMember, CMSSiteSettings } from "@/lib/strapi";
 import { strapiMediaUrl } from "@/lib/strapi/helpers";
 
@@ -107,6 +108,34 @@ export function AboutPage({ teamMembers, siteSettings }: AboutPageProps) {
 
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 md:py-28 bg-background border-t border-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <AnimatedSection>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+              <div>
+                <p className="text-[10px] tracking-[0.25em] uppercase text-accent mb-3">
+                  Ready to Start?
+                </p>
+                <h2 className="text-2xl md:text-3xl font-light tracking-tight text-foreground">
+                  Experience LUX for yourself.
+                </h2>
+                <p className="mt-3 text-sm text-muted-foreground max-w-md">
+                  Come see the facility, meet the team, and find the membership
+                  that fits your goals.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 shrink-0">
+                <Button href="/contact">Book a Tour</Button>
+                <Button href="/memberships" variant="outline">
+                  View Memberships
+                </Button>
+              </div>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
