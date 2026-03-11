@@ -1,6 +1,6 @@
 import { strapiGet } from "./client";
 import { normalizeCollection, normalizeSingle } from "./helpers";
-import { SERVICES, MEMBERSHIP_PLANS, HOURS, SITE_CONFIG } from "@/lib/constants";
+import { SERVICES, HOURS, SITE_CONFIG } from "@/lib/constants";
 import type {
   CMSService,
   CMSMembership,
@@ -39,25 +39,20 @@ export async function getServices(): Promise<CMSService[]> {
 /* ─── Memberships ─── */
 
 export async function getMemberships(): Promise<CMSMembership[]> {
-  const res = await strapiGet<StrapiResponse<CMSMembership[]>>({
-    path: "/memberships",
-    params: { sort: "order:asc", status: "published" },
-  });
+  try {
+    const res = await strapiGet<StrapiResponse<CMSMembership[]>>({
+      path: "/memberships",
+      params: { sort: "order:asc", status: "published" },
+    });
 
-  const data = normalizeCollection(res);
-  if (data.length > 0) return data;
+    const data = normalizeCollection(res);
+    if (data.length > 0) return data;
+  } catch {
+    // fall through — component uses its own MEMBERSHIPS_FALLBACK
+  }
 
-  return MEMBERSHIP_PLANS.map((p, i) => ({
-    id: i + 1,
-    name: p.name,
-    slug: p.id,
-    price: p.price,
-    interval: p.interval as "month" | "year",
-    description: p.description,
-    features: [...p.features],
-    highlighted: p.highlighted,
-    order: i,
-  }));
+  // Return empty so the component's own fallback (with correct prices) takes over
+  return [];
 }
 
 /* ─── Testimonials ─── */
